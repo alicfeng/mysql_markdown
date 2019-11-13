@@ -28,6 +28,21 @@ var (
 	charset  = flag.String("c", "utf8", "charset(utf8)")
 )
 
+func init() {
+	flag.CommandLine.Usage = func() {
+		fmt.Println("Usage: mysql_markdown [options...]\n" +
+			"--help  This help text" + "\n" +
+			"-h      host.     default 127.0.0.1" + "\n" +
+			"-u      username. default root" + "\n" +
+			"-p      password. default root" + "\n" +
+			"-d      database. default mysql" + "\n" +
+			"-P      port.     default 3306" + "\n" +
+			"-c      charset.  default utf8" +
+			"")
+		os.Exit(0)
+	}
+}
+
 /**
 Structured Query Language
  */
@@ -179,4 +194,3 @@ func main() {
 	mdFile.Close()
 	fmt.Println("mysql_markdown finished ...")
 }
-
