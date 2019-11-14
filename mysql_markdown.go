@@ -181,7 +181,7 @@ func main() {
 	for index, table := range tables { //range returns both the index and value
 		fmt.Printf("%d/%d the %s table is making ...\n", index+1, len(tables), table.Name)
 		tableContent += "#### " + strconv.Itoa(index) + " " + table.Name
-		if table.Comment.Valid {
+		if table.Comment.String != "" {
 			tableContent += "( " + table.Comment.String + " )"
 		}
 		tableContent += "\n" +
