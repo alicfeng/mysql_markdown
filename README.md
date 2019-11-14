@@ -1,7 +1,22 @@
 ## mysql_markdown
 It can generate markdown structure documents of MySQL succinctly~
 
-#### install
+[![asciicast](https://asciinema.org/a/68r0iwYLODOLVbAhHPExIjdo9.svg)](https://asciinema.org/a/68r0iwYLODOLVbAhHPExIjdo9)
+
+___
+
+
+
+#### 背景
+
+在实施软件工程的时候，当要将某一版本归档时，需要汇总的文档要求还是比较高的、各类文档齐全，包括项目架构、项目安装、接口等文档，而数据库表结构说明文档亦属于其一。记得很早之前想找一个可以导出 `MySQL` 数据库表结构说明文档的工具，生态上的这种工具是有的、只不过并没有一个使我比较满足的。当然、看个人所需，我需要一个可以导出 `markdown` 文档的。
+
+于是 `mysql_markdown` 就出现了、应用而生。它是一款基于 `go` 语言编写的一个命令行工具，适用于 `Linux`、`Mac`、`Windows`等平台。**那么它可以做什么？他只有一个功能、就是生成数据库表结构说明文档，格式为`madkdown`**。
+
+
+
+#### 安装
+
 ###### unix
 ```shell
 curl -o /usr/local/bin/mysql_markdown -sSL https://raw.githubusercontent.com/alicfeng/mysql_markdown/master/release/mysql_markdown_unix
@@ -21,9 +36,14 @@ go build -o /usr/local/bin/mysql_markdown mysql_markdown.go
 chmod +x /usr/local/bin/mysql_markdown
 ```
 
-#### usage
+
+
+#### 使用
+
 ```shell
-mysql_markdown -h
+# 帮助函数
+➜  mysql_markdown -h
+flag needs an argument: -h
 Usage: mysql_markdown [options...]
 --help  This help text
 -h      host.     default 127.0.0.1
@@ -33,10 +53,8 @@ Usage: mysql_markdown [options...]
 -P      port.     default 3306
 -c      charset.  default utf8
 -o      output.   default current location
-```
 
-#### simple
-```shell
+# 简单使用
 ➜ mysql_markdown -p samego -d samego
 mysql connected ...
 1/8 the demo table is making ...
@@ -49,6 +67,8 @@ mysql connected ...
 8/8 the users table is making ...
 mysql_markdown finished ...
 ```
+
+
 
 #### md2anyDoc
 md转其它类型的文档推荐使用 `typora` 工具 它支持如下转换格式
@@ -65,3 +85,12 @@ md转其它类型的文档推荐使用 `typora` 工具 它支持如下转换格�
 - md2textile
 - md2OPML
 - md2png
+
+
+
+#### 文档页面效果
+###### 生成的MD文件
+![MySQL 表结构生成 Markdown 文档](https://cdn.learnku.com/uploads/images/201911/15/29791/v28OfsqA9o.png)
+
+###### MD文件转PDF
+![MySQL 表结构生成 Markdown转PDF 文档](https://cdn.learnku.com/uploads/images/201911/15/29791/Jt75k4Fvy2.png)
