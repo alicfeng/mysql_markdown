@@ -27,6 +27,7 @@ var (
 	database = flag.String("d", "mysql", "database(mysql)")
 	port     = flag.Int("P", 3306, "port(3306)")
 	charset  = flag.String("c", "utf8", "charset(utf8)")
+	output   = flag.String("o", "", "output location")
 )
 
 func init() {
@@ -38,7 +39,8 @@ func init() {
 			"-p      password. default root" + "\n" +
 			"-d      database. default mysql" + "\n" +
 			"-P      port.     default 3306" + "\n" +
-			"-c      charset.  default utf8" +
+			"-c      charset.  default utf8" + "\n" +
+			"-o      output.   default current location" +
 			"")
 		os.Exit(0)
 	}
@@ -169,8 +171,11 @@ func main() {
 	}
 
 	// create and open markdown file
-	var mdFileName = *database + "_" + time.Now().Format("20060102_150405") + ".md"
-	mdFile, err := os.OpenFile(mdFileName, os.O_APPEND|os.O_WRONLY|os.O_CREATE, os.ModePerm)
+	if *output == "" {
+		// automatically generated if no output file path is specified
+		*output = *database + "_" + time.Now().Format("20060102_150405") + ".md"
+	}
+	mdFile, err := os.OpenFile(*output, os.O_APPEND|os.O_WRONLY|os.O_CREATE, os.ModePerm)
 	if err != nil {
 		fmt.Printf("create and open markdown file error, detail is [%v]", err.Error())
 		return
@@ -178,12 +183,17 @@ func main() {
 
 	// make markdown format content
 	var tableContent = "## " + *database + " tables message\n"
-	for index, table := range tables { //range returns both the index and value
+	for index, table := range tables {
+		// make content process log
 		fmt.Printf("%d/%d the %s table is making ...\n", index+1, len(tables), table.Name)
-		tableContent += "#### " + strconv.Itoa(index) + " " + table.Name
+
+		// markdown header title
+		tableContent += "#### " + strconv.Itoa(index+1) + "、 " + table.Name + "\n"
 		if table.Comment.String != "" {
-			tableContent += "( " + table.Comment.String + " )"
+			tableContent += table.Comment.String + "\n"
 		}
+
+		// markdown table header
 		tableContent += "\n" +
 			"| 序号 | 名称 | 描述 | 类型 | 键 | 为空 | 额外 | 默认值 |\n" +
 			"| :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |\n"
