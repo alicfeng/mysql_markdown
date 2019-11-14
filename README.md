@@ -32,8 +32,8 @@ Usage: mysql_markdown [options...]
 -d      database. default mysql
 -P      port.     default 3306
 -c      charset.  default utf8
+-o      output.   default current location
 ```
-
 
 #### simple
 ```shell
