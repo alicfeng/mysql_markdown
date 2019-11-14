@@ -2,8 +2,23 @@
 It can generate markdown structure documents of MySQL succinctly~
 
 #### install
+###### unix
+```shell
+curl -o /usr/local/bin/mysql_markdown -sSL https://raw.githubusercontent.com/alicfeng/mysql_markdown/master/release/mysql_markdown_unix
+chmod +x /usr/local/bin/mysql_markdown
 ```
-curl -o /usr/local/bin -sSL https://raw.githubusercontent.com/alicfeng/mysql_markdown/master/mysql_markdown
+###### mac
+```shell
+curl -o /usr/local/bin/mysql_markdown -sSL https://raw.githubusercontent.com/alicfeng/mysql_markdown/master/release/mysql_markdown_mac
+chmod +x /usr/local/bin/mysql_markdown
+```
+###### other
+```shell
+git clone https://github.com/alicfeng/mysql_markdown.git
+cd mysql_markdown
+go get "github.com/go-sql-driver/mysql"
+go build -o /usr/local/bin/mysql_markdown mysql_markdown.go
+chmod +x /usr/local/bin/mysql_markdown
 ```
 
 #### usage
@@ -34,3 +49,19 @@ mysql connected ...
 8/8 the users table is making ...
 mysql_markdown finished ...
 ```
+
+#### md2anyDoc
+md转其它类型的文档推荐使用 `typora` 工具 它支持如下转换格式
+- md2pdf
+- md2html
+- md2html(without styles)
+- md2word
+- md2rtf
+- md2openOffice
+- md2Epub
+- md2latex
+- md2MediaWiki
+- md2reStructureText
+- md2textile
+- md2OPML
+- md2png
