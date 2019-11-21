@@ -14,6 +14,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -28,6 +29,7 @@ var (
 	port     = flag.Int("P", 3306, "port(3306)")
 	charset  = flag.String("c", "utf8", "charset(utf8)")
 	output   = flag.String("o", "", "output location")
+	tables   = flag.String("t", "", "choose tables")
 )
 
 func init() {
@@ -40,7 +42,8 @@ func init() {
 			"-d      database. default mysql" + "\n" +
 			"-P      port.     default 3306" + "\n" +
 			"-c      charset.  default utf8" + "\n" +
-			"-o      output.   default current location" +
+			"-o      output.   default current location\n" +
+			"-t      tables.   default all table and support ',' separator for filter" +
 			"")
 		os.Exit(0)
 	}
@@ -86,7 +89,8 @@ func connect() (*sql.DB, error) {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=%s", *username, *password, *host, *port, *database, *charset)
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
-		fmt.Printf("mysql connect failed, detail is [%v]", err.Error())
+		fmt.Printf("mysql sql open failed, detail is [%v]", err)
+		return db, err
 	}
 
 	return db, err
@@ -96,30 +100,52 @@ func connect() (*sql.DB, error) {
 query table info about scheme
 */
 func queryTables(db *sql.DB, dbName string) ([]tableInfo, error) {
-	var tables []tableInfo
+	var tableCollect []tableInfo
+	var tableArray []string
+	var commentArray []sql.NullString
 
 	rows, err := db.Query(SqlTables, dbName)
 	if err != nil {
-		fmt.Printf("execute query tables action error, detail is [%v]", err.Error())
-		return tables, err
+		return tableCollect, err
 	}
 
 	for rows.Next() {
 		var info tableInfo
 		err = rows.Scan(&info.Name, &info.Comment)
 		if err != nil {
-			fmt.Printf("execute query tables action error,had ignored, detail is [%v]", err.Error())
+			fmt.Printf("execute query tables action error,had ignored, detail is [%v]\n", err.Error())
 			continue
 		}
 
-		tables = append(tables, info)
+		tableCollect = append(tableCollect, info)
+		tableArray = append(tableArray, info.Name)
+		commentArray = append(commentArray, info.Comment)
+	}
+	// filter tables when specified tables params
+	if *tables != "" {
+		tableCollect = nil
+		chooseTables := strings.Split(*tables, ",")
+		for _, item := range chooseTables {
+			// handler -t params | table filter
+			// not contain
+			containIndex := containsString(tableArray, item)
+			if -1 == containIndex {
+				fmt.Printf("\033[33mthe %s table is not exist\033[0m \n", item)
+				continue
+			}
+			// contain
+			var info tableInfo
+			info.Name = tableArray[containIndex]
+			info.Comment = commentArray[containIndex]
+			tableCollect = append(tableCollect, info)
+		}
 	}
 
-	return tables, err
+	return tableCollect, err
 }
 
 /**
-查询数据表列信息
+query table column message
 */
 func queryTableColumn(db *sql.DB, dbName string, tableName string) ([]tableColumn, error) {
 	// 定义承载列信息的切片
@@ -127,20 +153,32 @@ func queryTableColumn(db *sql.DB, dbName string, tableName string) ([]tableColum
 
 	rows, err := db.Query(SqlTableColumn, dbName, tableName)
 	if err != nil {
-		fmt.Printf("execute query table column action error, detail is [%v]", err.Error())
+		fmt.Printf("execute query table column action error, detail is [%v]\n", err.Error())
 		return columns, err
 	}
 	for rows.Next() {
 		var column tableColumn
 		err = rows.Scan(&column.OrdinalPosition, &column.ColumnName, &column.ColumnType, &column.ColumnKey, &column.IsNullable, &column.Extra, &column.ColumnComment, &column.ColumnDefault)
 		if err != nil {
-			fmt.Printf("query table column scan error, detail is [%v]", err.Error())
+			fmt.Printf("query table column scan error, detail is [%v]\n", err.Error())
 			return columns, err
 		}
 		columns = append(columns, column)
 	}
 
 	return columns, err
+}
+
+/**
+string array contain string func
+ */
+func containsString(array []string, val string) (int) {
+	for i := 0; i < len(array); i++ {
+		if array[i] == val {
+			return i
+		}
+	}
+	return -1
 }
 
 /**
@@ -156,17 +194,16 @@ main func
 */
 func main() {
 	// connect mysql service
-	var db, connectErr = connect()
+	db, connectErr := connect()
 	if connectErr != nil {
-		fmt.Println("mysql connect service fail ...")
+		fmt.Printf("\033[31mmysql sql open failed ... \033[0m \n")
 		return
 	}
-	fmt.Println("mysql successfully connected ...")
 
 	// query all table name
-	var tables, tablesErr = queryTables(db, *database)
-	if tablesErr != nil {
-		fmt.Println("query tables of database error ...")
+	tables, err := queryTables(db, *database)
+	if err != nil {
+		fmt.Printf("\033[31mquery tables of database error ... \033[0m \n%v\n", err.Error())
 		return
 	}
 
@@ -177,7 +214,7 @@ func main() {
 	}
 	mdFile, err := os.OpenFile(*output, os.O_APPEND|os.O_WRONLY|os.O_CREATE, os.ModePerm)
 	if err != nil {
-		fmt.Printf("create and open markdown file error, detail is [%v]", err.Error())
+		fmt.Printf("\033[31mcreate and open markdown file error \033[0m \n%v\n", err.Error())
 		return
 	}
 
@@ -221,5 +258,5 @@ func main() {
 	// close database and file handler for release
 	err = db.Close()
 	err = mdFile.Close()
-	fmt.Println("mysql_markdown finished ...")
+	fmt.Printf("\033[32mmysql_markdown finished ... \033[0m \n")
 }

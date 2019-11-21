@@ -1,5 +1,5 @@
 <h1 align="center">
-  <a href="https://github.com/alicfeng/identity-card">
+  <a href="https://github.com/alicfeng/mysql_markdown">
     mysql_markdown
   </a>
 </h1>
@@ -7,7 +7,7 @@
   It can generate markdown structure documents of MySQL succinctly~
 </p>
 
-[![asciicast](https://asciinema.org/a/68r0iwYLODOLVbAhHPExIjdo9.svg)](https://asciinema.org/a/68r0iwYLODOLVbAhHPExIjdo9)
+[![asciicast](https://asciinema.org/a/oxsrMBSPihwpOv4pr6rLFdLGg)](https://asciinema.org/a/oxsrMBSPihwpOv4pr6rLFdLGg)
 
 ___
 
@@ -22,18 +22,14 @@ ___
 
 #### 安装
 
-###### unix
-```shell
-curl -o /usr/local/bin/mysql_markdown -sSL https://raw.githubusercontent.com/alicfeng/mysql_markdown/master/release/mysql_markdown_unix
-chmod +x /usr/local/bin/mysql_markdown
+###### 安装方式.1
+```bash
+# curl install
+curl -fsSL "https://raw.githubusercontent.com/alicfeng/mysql_markdown/master/install" | sudo
 ```
-###### mac
-```shell
-curl -o /usr/local/bin/mysql_markdown -sSL https://raw.githubusercontent.com/alicfeng/mysql_markdown/master/release/mysql_markdown_mac
-chmod +x /usr/local/bin/mysql_markdown
-```
-###### other
-```shell
+###### 安装方式.2
+```bash
+# build install
 git clone https://github.com/alicfeng/mysql_markdown.git
 cd mysql_markdown
 go get "github.com/go-sql-driver/mysql"
