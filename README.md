@@ -25,7 +25,7 @@ ___
 ###### 安装方式.1
 ```bash
 # curl install
-curl -fsSL "https://raw.githubusercontent.com/alicfeng/mysql_markdown/master/install" | sudo
+curl -fsSL "https://raw.githubusercontent.com/alicfeng/mysql_markdown/master/install" | sudo sh
 ```
 ###### 安装方式.2
 ```bash
