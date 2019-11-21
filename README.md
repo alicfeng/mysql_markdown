@@ -7,7 +7,7 @@
   It can generate markdown structure documents of MySQL succinctly~
 </p>
 
-[![asciicast](https://asciinema.org/a/oxsrMBSPihwpOv4pr6rLFdLGg)](https://asciinema.org/a/oxsrMBSPihwpOv4pr6rLFdLGg)
+[![asciicast](https://asciinema.org/a/oxsrMBSPihwpOv4pr6rLFdLGg.svg)](https://asciinema.org/a/oxsrMBSPihwpOv4pr6rLFdLGg)
 
 ___
 
