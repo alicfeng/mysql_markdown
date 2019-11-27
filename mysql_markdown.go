@@ -30,24 +30,9 @@ var (
 	charset  = flag.String("c", "utf8", "charset(utf8)")
 	output   = flag.String("o", "", "output location")
 	tables   = flag.String("t", "", "choose tables")
+	version  = flag.Bool("v", false, "show version and exit")
+	detail  = flag.Bool("V", false, "show version and exit")
 )
-
-func init() {
-	flag.CommandLine.Usage = func() {
-		fmt.Println("Usage: mysql_markdown [options...]\n" +
-			"--help  This help text" + "\n" +
-			"-h      host.     default 127.0.0.1" + "\n" +
-			"-u      username. default root" + "\n" +
-			"-p      password. default root" + "\n" +
-			"-d      database. default mysql" + "\n" +
-			"-P      port.     default 3306" + "\n" +
-			"-c      charset.  default utf8" + "\n" +
-			"-o      output.   default current location\n" +
-			"-t      tables.   default all table and support ',' separator for filter" +
-			"")
-		os.Exit(0)
-	}
-}
 
 /**
 Structured Query Language
@@ -186,7 +171,35 @@ init func
 */
 func init() {
 	// init flag for command
+	flag.CommandLine.Usage = func() {
+		fmt.Println("Usage: mysql_markdown [options...]\n" +
+			"--help  This help text" + "\n" +
+			"-h      host.     default 127.0.0.1" + "\n" +
+			"-u      username. default root" + "\n" +
+			"-p      password. default root" + "\n" +
+			"-d      database. default mysql" + "\n" +
+			"-P      port.     default 3306" + "\n" +
+			"-c      charset.  default utf8" + "\n" +
+			"-o      output.   default current location\n" +
+			"-t      tables.   default all table and support ',' separator for filter" +
+			"")
+		os.Exit(0)
+	}
 	flag.Parse()
+	if *version {
+		fmt.Println("mysql_markdown version: 1.0.1")
+		os.Exit(0)
+	}
+	if *detail {
+		fmt.Println(
+			"mysql_markdown version: 1.0.1\n" +
+				"build by golang 2019.11.27\n" +
+				"author		AlicFeng\n" +
+				"tutorial	https://github.com/alicfeng/mysql_markdown\n" +
+				"价值源于技术,技术源于分享" +
+				"")
+		os.Exit(0)
+	}
 }
 
 /**
