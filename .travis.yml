@@ -1,0 +1,23 @@
+os:
+  - linux
+  - osx
+  - windows
+
+sudo: false
+
+language: go
+
+install:
+  - go get "github.com/go-sql-driver/mysql"
+
+script:
+  - go build -o mysql_markdown mysql_markdown.go
+  - chmod +x mysql_markdown
+  - ./mysql_markdown -h
+
+branches:
+  only:
+  - master
+
+notifications:
+  email: true

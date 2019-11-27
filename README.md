@@ -6,6 +6,11 @@
 <p align="center">
   It can generate markdown structure documents of MySQL succinctly~
 </p>
+<p align="center">
+  <a href="https://github.com/alicfeng/mysql_markdown">
+    <img src="https://travis-ci.org/alicfeng/mysql_markdown.svg?branch=master" alt="build status">
+  </a>
+</p>
 
 [![asciicast](https://asciinema.org/a/oxsrMBSPihwpOv4pr6rLFdLGg.svg)](https://asciinema.org/a/oxsrMBSPihwpOv4pr6rLFdLGg)
 
