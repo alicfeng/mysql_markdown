@@ -48,7 +48,7 @@ const (
 struct for table column
 */
 type tableColumn struct {
-	OrdinalPosition int8           `db:"ORDINAL_POSITION"` // position
+	OrdinalPosition uint16         `db:"ORDINAL_POSITION"` // position
 	ColumnName      string         `db:"COLUMN_NAME"`      // name
 	ColumnType      string         `db:"COLUMN_TYPE"`      // type
 	ColumnKey       sql.NullString `db:"COLUMN_KEY"`       // key
@@ -187,13 +187,13 @@ func init() {
 	}
 	flag.Parse()
 	if *version {
-		fmt.Println("mysql_markdown version: 1.0.1")
+		fmt.Println("mysql_markdown version: 1.0.2")
 		os.Exit(0)
 	}
 	if *detail {
 		fmt.Println(
-			"mysql_markdown version: 1.0.1\n" +
-				"build by golang 2019.11.27\n" +
+			"mysql_markdown version: 1.0.2\n" +
+				"build by golang 2019.11.28\n" +
 				"author		AlicFeng\n" +
 				"tutorial	https://github.com/alicfeng/mysql_markdown\n" +
 				"价值源于技术,技术源于分享" +
