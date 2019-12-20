@@ -16,6 +16,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+    "sort"
 )
 
 /**
@@ -64,6 +65,20 @@ struct for table message
 type tableInfo struct {
 	Name    string         `db:"table_name"`    // name
 	Comment sql.NullString `db:"table_comment"` // comment
+}
+
+type tableColumnArray []tableColumn
+
+func (a tableColumnArray) Len() int {
+    return len(a)
+}
+
+func (a tableColumnArray) Swap(i, j int) {
+    a[i], a[j] = a[j], a[i]
+}
+
+func (a tableColumnArray) Less(i, j int) bool {
+    return a[j].OrdinalPosition < a[i].OrdinalPosition
 }
 
 /**
@@ -150,7 +165,8 @@ func queryTableColumn(db *sql.DB, dbName string, tableName string) ([]tableColum
 		}
 		columns = append(columns, column)
 	}
-
+	// 排序
+    sort.Sort(sort.Reverse(tableColumnArray(columns)))
 	return columns, err
 }
 
