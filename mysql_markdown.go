@@ -41,7 +41,7 @@ const (
 	// 查看数据库所有数据表SQL
 	SqlTables = "SELECT `table_name`,`table_comment` FROM `information_schema`.`tables` WHERE `table_schema`=?"
 	// 查看数据表列信息SQL
-	SqlTableColumn = "SELECT `ORDINAL_POSITION`,`COLUMN_NAME`,`COLUMN_TYPE`,`COLUMN_KEY`,`IS_NULLABLE`,`EXTRA`,`COLUMN_COMMENT`,`COLUMN_DEFAULT` FROM `information_schema`.`columns` WHERE `table_schema`=? AND `table_name`=? ORDER BY `ORDINAL_POSITION`"
+	SqlTableColumn = "SELECT `ORDINAL_POSITION`,`COLUMN_NAME`,`COLUMN_TYPE`,`COLUMN_KEY`,`IS_NULLABLE`,`EXTRA`,`COLUMN_COMMENT`,`COLUMN_DEFAULT` FROM `information_schema`.`columns` WHERE `table_schema`=? AND `table_name`=? ORDER BY `ORDINAL_POSITION` ASC"
 )
 
 /**
@@ -187,13 +187,13 @@ func init() {
 	}
 	flag.Parse()
 	if *version {
-		fmt.Println("mysql_markdown version: 1.0.2")
+		fmt.Println("mysql_markdown version: 1.0.3")
 		os.Exit(0)
 	}
 	if *detail {
 		fmt.Println(
-			"mysql_markdown version: 1.0.2\n" +
-				"build by golang 2019.11.28\n" +
+			"mysql_markdown version: 1.0.3\n" +
+				"build by golang 2019.12.23\n" +
 				"author		AlicFeng\n" +
 				"tutorial	https://github.com/alicfeng/mysql_markdown\n" +
 				"价值源于技术,技术源于分享" +
