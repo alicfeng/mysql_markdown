@@ -2,17 +2,17 @@
 
 dl_dir="https://raw.githubusercontent.com/alicfeng/mysql_markdown/master/release/"
 
-if [[ "$(uname)"=="Darwin" ]]; then
+if [[ "$(uname)" == "Darwin" ]]; then
     # Mac OS X 操作系统
     echo -e "installing mysql_markdown_mac"
     curl -o /usr/local/bin/mysql_markdown -sSL "${dl_dir}mysql_markdown_mac"
     chmod a+x /usr/local/bin/mysql_markdown
-elif [[ "$(expr substr $(uname -s) 1 5)"=="Linux" ]]; then
+elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
     # GNU/Linux操作系统
     echo "installing mysql_markdown_unix"
     curl -o /usr/local/bin/mysql_markdown -sSL "${dl_dir}mysql_markdown_unix"
     chmod a+x /usr/local/bin/mysql_markdown
-elif [[ "$(expr substr $(uname -s) 1 10)"=="MINGW32_NT" ]]; then
+elif [[ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]]; then
     # Windows NT操作系统
     echo "installing mysql_markdown_win"
     curl -o mysql_markdown -sSL "${dl_dir}mysql_markdown_unix"
