@@ -29,12 +29,11 @@ ___
 
 ###### 安装方式.1
 ```bash
-install.sh
-curl -fsSL "install.sh" | sudo sh
+curl -fsSL "https://raw.githubusercontent.com/alicfeng/mysql_markdown/master/install" | sudo sh
 ```
+
 ###### 安装方式.2
 ```bash
-install.sh
 git clone https://github.com/alicfeng/mysql_markdown.git
 cd mysql_markdown
 go get "github.com/go-sql-driver/mysql"
