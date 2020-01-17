@@ -27,12 +27,12 @@ ___
 
 #### 安装
 
-###### 安装方式.1
+###### 1.curl
 ```bash
 curl -fsSL "https://raw.githubusercontent.com/alicfeng/mysql_markdown/master/install" | sudo sh
 ```
 
-###### 安装方式.2
+###### 2.source
 ```bash
 git clone https://github.com/alicfeng/mysql_markdown.git
 cd mysql_markdown
@@ -41,7 +41,7 @@ go build -o /usr/local/bin/mysql_markdown mysql_markdown.go
 chmod +x /usr/local/bin/mysql_markdown
 ```
 
-###### 安装方式.2
+###### 3.download
 ```bash
 # download by browser
 https://dl.samego.com/#files%2Fpackage%2Fmysql_markdown
