@@ -41,6 +41,12 @@ go build -o /usr/local/bin/mysql_markdown mysql_markdown.go
 chmod +x /usr/local/bin/mysql_markdown
 ```
 
+###### 安装方式.2
+```bash
+# download by browser
+https://dl.samego.com/#files%2Fpackage%2Fmysql_markdown
+```
+
 
 #### 使用
 
