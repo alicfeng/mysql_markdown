@@ -42,10 +42,9 @@ chmod +x /usr/local/bin/mysql_markdown
 ```
 
 ###### 3.download
-```bash
-# download by browser
-https://dl.samego.com/#files%2Fpackage%2Fmysql_markdown
-```
+[https://dl.samego.com](https://dl.samego.com/#files%2Fpackage%2Fmysql_markdown)
+
+
 
 
 #### 使用

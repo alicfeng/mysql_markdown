@@ -31,7 +31,7 @@ var (
 	output   = flag.String("o", "", "output location")
 	tables   = flag.String("t", "", "choose tables")
 	version  = flag.Bool("v", false, "show version and exit")
-	detail  = flag.Bool("V", false, "show version and exit")
+	detail   = flag.Bool("V", false, "show version and exit")
 )
 
 /**
@@ -143,7 +143,15 @@ func queryTableColumn(db *sql.DB, dbName string, tableName string) ([]tableColum
 	}
 	for rows.Next() {
 		var column tableColumn
-		err = rows.Scan(&column.OrdinalPosition, &column.ColumnName, &column.ColumnType, &column.ColumnKey, &column.IsNullable, &column.Extra, &column.ColumnComment, &column.ColumnDefault)
+		err = rows.Scan(
+			&column.OrdinalPosition,
+			&column.ColumnName,
+			&column.ColumnType,
+			&column.ColumnKey,
+			&column.IsNullable,
+			&column.Extra,
+			&column.ColumnComment,
+			&column.ColumnDefault)
 		if err != nil {
 			fmt.Printf("query table column scan error, detail is [%v]\n", err.Error())
 			return columns, err
@@ -187,13 +195,13 @@ func init() {
 	}
 	flag.Parse()
 	if *version {
-		fmt.Println("mysql_markdown version: 1.0.3")
+		fmt.Println("mysql_markdown version: 1.0.4")
 		os.Exit(0)
 	}
 	if *detail {
 		fmt.Println(
-			"mysql_markdown version: 1.0.3\n" +
-				"build by golang 2019.12.23\n" +
+			"mysql_markdown version: 1.0.4\n" +
+				"build by golang 2020.02.07\n" +
 				"author		AlicFeng\n" +
 				"tutorial	https://github.com/alicfeng/mysql_markdown\n" +
 				"价值源于技术,技术源于分享" +
@@ -256,7 +264,7 @@ func main() {
 				"| %d | `%s` | %s | %s | %s | %s | %s | %s |\n",
 				info.OrdinalPosition,
 				info.ColumnName,
-				info.ColumnComment.String,
+				strings.ReplaceAll(info.ColumnComment.String, "\n", ""),
 				info.ColumnType,
 				info.ColumnKey.String,
 				info.IsNullable,
