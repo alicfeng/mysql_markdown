@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-dl_dir="https://dl.samego.com/package/mysql_markdown/"
+dl_dir="https://dl.samego.com/#files%2Fpackage%2Fmysql_markdown/"
 
 if [[ "$(uname)" == "Darwin" ]]; then
     # Mac OS X
