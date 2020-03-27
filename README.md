@@ -26,23 +26,7 @@ ___
 
 
 #### 安装
-
-###### 1.curl
-```bash
-curl -fsSL "https://raw.githubusercontent.com/alicfeng/mysql_markdown/master/install" | sudo sh
-```
-
-###### 2.source
-```bash
-git clone https://github.com/alicfeng/mysql_markdown.git
-cd mysql_markdown
-go get "github.com/go-sql-driver/mysql"
-go build -o /usr/local/bin/mysql_markdown mysql_markdown.go
-chmod +x /usr/local/bin/mysql_markdown
-```
-
-###### 3.download
-[https://dl.samego.com](https://dl.samego.com/#files%2Fpackage%2Fmysql_markdown)
+[releases download](https://github.com/alicfeng/mysql_markdown/releases)
 
 
 
