@@ -46,6 +46,7 @@ Usage: mysql_markdown [options...]
 -P      port.     default 3306
 -c      charset.  default utf8
 -o      output.   default current location
+-t      tables.   default all table and support ',' separator for filter, every item can use regexp
 
 # 简单使用
 ➜ mysql_markdown -p samego -d samego

@@ -11,12 +11,13 @@ import (
 	"database/sql"
 	"flag"
 	"fmt"
-	_ "github.com/go-sql-driver/mysql"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
-	"regexp"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 /**
@@ -171,7 +172,7 @@ func queryTableColumn(db *sql.DB, dbName string, tableName string) ([]tableColum
 /**
 get choose table index by regexp. then you can batch choose table like `time_zone\w`
 */
-func getTargetIndexMap(tableNameArr []string, item string) (map[int]int) {
+func getTargetIndexMap(tableNameArr []string, item string) map[int]int {
 	indexMap := make(map[int]int)
 	for i := 0; i < len(tableNameArr); i++ {
 		if match, _ := regexp.MatchString(item, tableNameArr[i]); match {
@@ -183,7 +184,6 @@ func getTargetIndexMap(tableNameArr []string, item string) (map[int]int) {
 	}
 	return indexMap
 }
-
 
 /**
 init func
@@ -206,13 +206,13 @@ func init() {
 	}
 	flag.Parse()
 	if *version {
-		fmt.Println("mysql_markdown version: 1.0.4")
+		fmt.Println("mysql_markdown version: 1.0.5")
 		os.Exit(0)
 	}
 	if *detail {
 		fmt.Println(
-			"mysql_markdown version: 1.0.4\n" +
-				"build by golang 2020.02.07\n" +
+			"mysql_markdown version: 1.0.5\n" +
+				"build by golang 2020.07.04\n" +
 				"author		AlicFeng\n" +
 				"tutorial	https://github.com/alicfeng/mysql_markdown\n" +
 				"价值源于技术,技术源于分享" +
