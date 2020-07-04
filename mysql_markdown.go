@@ -16,6 +16,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"regexp"
 )
 
 /**
@@ -110,19 +111,24 @@ func queryTables(db *sql.DB, dbName string) ([]tableInfo, error) {
 	if *tables != "" {
 		tableCollect = nil
 		chooseTables := strings.Split(*tables, ",")
+		indexMap := make(map[int]int)
 		for _, item := range chooseTables {
-			// handler -t params | table filter
-			// not contain
-			containIndex := containsString(tableArray, item)
-			if -1 == containIndex {
-				fmt.Printf("\033[33mthe %s table is not exist\033[0m \n", item)
-				continue
+			subIndexMap := getTargetIndexMap(tableArray, item)
+			for k, v := range subIndexMap {
+				if _, ok := indexMap[k]; ok {
+					continue
+				}
+				indexMap[k] = v
 			}
-			// contain
-			var info tableInfo
-			info.Name = tableArray[containIndex]
-			info.Comment = commentArray[containIndex]
-			tableCollect = append(tableCollect, info)
+		}
+
+		if len(indexMap) != 0 {
+			for _, v := range indexMap {
+				var info tableInfo
+				info.Name = tableArray[v]
+				info.Comment = commentArray[v]
+				tableCollect = append(tableCollect, info)
+			}
 		}
 	}
 
@@ -163,16 +169,21 @@ func queryTableColumn(db *sql.DB, dbName string, tableName string) ([]tableColum
 }
 
 /**
-string array contain string func
- */
-func containsString(array []string, val string) (int) {
-	for i := 0; i < len(array); i++ {
-		if array[i] == val {
-			return i
+get choose table index by regexp. then you can batch choose table like `time_zone\w`
+*/
+func getTargetIndexMap(tableNameArr []string, item string) (map[int]int) {
+	indexMap := make(map[int]int)
+	for i := 0; i < len(tableNameArr); i++ {
+		if match, _ := regexp.MatchString(item, tableNameArr[i]); match {
+			if _, ok := indexMap[i]; ok {
+				continue
+			}
+			indexMap[i] = i
 		}
 	}
-	return -1
+	return indexMap
 }
+
 
 /**
 init func
@@ -189,7 +200,7 @@ func init() {
 			"-P      port.     default 3306" + "\n" +
 			"-c      charset.  default utf8" + "\n" +
 			"-o      output.   default current location\n" +
-			"-t      tables.   default all table and support ',' separator for filter" +
+			"-t      tables.   default all table and support ',' separator for filter, every item can use regexp" +
 			"")
 		os.Exit(0)
 	}
@@ -223,6 +234,7 @@ func main() {
 
 	// query all table name
 	tables, err := queryTables(db, *database)
+
 	if err != nil {
 		fmt.Printf("\033[31mquery tables of database error ... \033[0m \n%v\n", err.Error())
 		return
