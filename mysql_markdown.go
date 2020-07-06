@@ -276,7 +276,7 @@ func main() {
 				"| %d | `%s` | %s | %s | %s | %s | %s | %s |\n",
 				info.OrdinalPosition,
 				info.ColumnName,
-				strings.ReplaceAll(info.ColumnComment.String, "\n", ""),
+				strings.ReplaceAll(strings.ReplaceAll(info.ColumnComment.String,"|","\\|"), "\n", ""),
 				info.ColumnType,
 				info.ColumnKey.String,
 				info.IsNullable,
