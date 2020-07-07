@@ -12,7 +12,6 @@
   </a>
 </p>
 
-[![asciicast](https://asciinema.org/a/oxsrMBSPihwpOv4pr6rLFdLGg.svg)](https://asciinema.org/a/oxsrMBSPihwpOv4pr6rLFdLGg)
 
 ___
 
