@@ -7,16 +7,27 @@ sudo: false
 
 language: go
 
+services:
+  - docker
+
 go:
   - "1.13"
 
 install:
   - go get "github.com/go-sql-driver/mysql"
 
+before_script:
+  - go version
+
 script:
   - go build -o mysql_markdown mysql_markdown.go
   - chmod +x mysql_markdown
   - ./mysql_markdown -h
+
+after_script:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker build -t alicfeng/mysql_markdown:latest -f Dockerfile .
+  - docker push alicfeng/mysql_markdown:latest
 
 branches:
   only:
