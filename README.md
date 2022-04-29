@@ -4,13 +4,20 @@
   </a>
 </h1>
 <p align="center">
-  It can generate markdown structure documents of MySQL succinctly~
+  🛠 It can generate markdown structure documents of MySQL succinctly~
 </p>
 <p align="center">
+  <a href="https://github.com/alicfeng/mysql_markdown/releases">
+    <img src="https://img.shields.io/github/release/alicfeng/mysql_markdown" alt="release version">
+  </a>
   <a href="https://github.com/alicfeng/mysql_markdown">
     <img src="https://travis-ci.org/alicfeng/mysql_markdown.svg?branch=master" alt="build status">
   </a>
+  <a href="https://lbesson.mit-license.org">
+    <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="open source">
+  </a>
 </p>
+
 
 
 ___
@@ -24,16 +31,19 @@ ___
 
 
 
-#### 安装
-[releases download](https://github.com/alicfeng/mysql_markdown/releases)
+#### 🪤 快速安装
+
+> 哪位老哥协助帮忙发布到包管理器更是方便了 感恩~
+
+到 [releases](https://github.com/alicfeng/mysql_markdown/releases) 页面下载运行，源码编译也行。
 
 
 
 
-#### 使用
+#### 🚀 快速使用
 
 ```shell
-# 帮助函数
+# 帮助
 ➜  mysql_markdown -h
 flag needs an argument: -h
 Usage: mysql_markdown [options...]
@@ -47,23 +57,24 @@ Usage: mysql_markdown [options...]
 -o      output.   default current location
 -t      tables.   default all table and support ',' separator for filter, every item can use regexp
 
-# 简单使用
+# 使用
 ➜ mysql_markdown -p samego -d samego
-mysql connected ...
-1/8 the demo table is making ...
-2/8 the failed_jobs table is making ...
-3/8 the migrations table is making ...
-4/8 the password_resets table is making ...
-5/8 the roles table is making ...
-6/8 the user table is making ...
-7/8 the userinfo table is making ...
-8/8 the users table is making ...
-mysql_markdown finished ...
+connecting to MySQL to export markdown document file.
+ 100% |█████████████████████████████████████████████████████████████████████████████████████| (31/31, 70 it/s)
+convert to document finished in mysql_20220429_101148.md
 ```
 
 
-#### md2anyDoc
-md转其它类型的文档推荐使用 `typora` 工具 它支持如下转换格式
+
+#### 💾 文档快照
+![MySQL 表结构生成 Markdown 文档](https://upload-images.jianshu.io/upload_images/1678789-8050fa3687e575db.png)
+
+
+
+#### 🏷 特别说明
+
+`markdown` 转其它类型的文档推荐使用 `typora` 工具 它支持如下转换格式
+
 - md2pdf
 - md2html
 - md2html(without styles)
@@ -78,12 +89,3 @@ md转其它类型的文档推荐使用 `typora` 工具 它支持如下转换格�
 - md2OPML
 - md2png
 
-
-
-#### 文档页面效果
-###### 生成的MD文件
-![MySQL 表结构生成 Markdown 文档](https://upload-images.jianshu.io/upload_images/1678789-8050fa3687e575db.png)
-
-
-###### MD文件转PDF
-![MySQL 表结构生成 Markdown转PDF 文档](https://upload-images.jianshu.io/upload_images/1678789-5b5d3abfc3454352.png)

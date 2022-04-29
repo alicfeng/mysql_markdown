@@ -11,6 +11,7 @@ import (
 	"database/sql"
 	"flag"
 	"fmt"
+	"github.com/schollz/progressbar/v3"
 	"os"
 	"regexp"
 	"strconv"
@@ -225,18 +226,21 @@ func init() {
 main func
 */
 func main() {
+	fmt.Printf("\033[32mconnecting to MySQL to export markdown document file.\033[0m \n")
+
 	// connect mysql service
-	db, connectErr := connect()
-	if connectErr != nil {
+	db, err := connect()
+	if err != nil {
 		fmt.Printf("\033[31mmysql sql open failed ... \033[0m \n")
 		return
 	}
+	defer db.Close()
 
 	// query all table name
 	tables, err := queryTables(db, *database)
 
 	if err != nil {
-		fmt.Printf("\033[31mquery tables of database error ... \033[0m \n%v\n", err.Error())
+		fmt.Printf("\033[31mquery tables of database error (%v) \033[0m \n", err.Error())
 		return
 	}
 
@@ -247,15 +251,18 @@ func main() {
 	}
 	mdFile, err := os.OpenFile(*output, os.O_APPEND|os.O_WRONLY|os.O_CREATE, os.ModePerm)
 	if err != nil {
-		fmt.Printf("\033[31mcreate and open markdown file error \033[0m \n%v\n", err.Error())
+		fmt.Printf("\033[31mcreate and open markdown file error (%v) \033[0m \n", err.Error())
 		return
 	}
+	defer mdFile.Close()
 
 	// make markdown format content
 	var tableContent = "## " + *database + " tables message\n"
+	bar := progressbar.Default(int64(len(tables)))
+
 	for index, table := range tables {
 		// make content process log
-		fmt.Printf("%d/%d the %s table is making ...\n", index+1, len(tables), table.Name)
+		//fmt.Printf("%d/%d the %s table is making ...\n", index+1, len(tables), table.Name)
 
 		// markdown header title
 		tableContent += "#### " + strconv.Itoa(index+1) + "、 " + table.Name + "\n"
@@ -276,7 +283,7 @@ func main() {
 				"| %d | `%s` | %s | %s | %s | %s | %s | %s |\n",
 				info.OrdinalPosition,
 				info.ColumnName,
-				strings.ReplaceAll(strings.ReplaceAll(info.ColumnComment.String,"|","\\|"), "\n", ""),
+				strings.ReplaceAll(strings.ReplaceAll(info.ColumnComment.String, "|", "\\|"), "\n", ""),
 				info.ColumnType,
 				info.ColumnKey.String,
 				info.IsNullable,
@@ -285,11 +292,15 @@ func main() {
 			)
 		}
 		tableContent += "\n\n"
+
+		_ = bar.Add(1)
 	}
-	mdFile.WriteString(tableContent)
+	_, err = mdFile.WriteString(tableContent)
+	if nil != err {
+		fmt.Printf("\033[31mwrite table content failure (%v) \033[0m \n", err.Error())
+		os.Exit(-1)
+	}
 
 	// close database and file handler for release
-	err = db.Close()
-	err = mdFile.Close()
-	fmt.Printf("\033[32mmysql_markdown finished ... \033[0m \n")
+	fmt.Printf("\033[32mconvert to document finished in %s \033[0m \n", *output)
 }
