@@ -6,3 +6,8 @@ COPY release/mysql_markdown_unix /usr/local/sbin/mysql_markdown
 
 RUN chmod a+x /usr/local/sbin/mysql_markdown && \
     mkdir /data/
+
+WORKDIR /data
+
+ENTRYPOINT [ "/usr/local/sbin/mysql_markdown" ]
+CMD [ "--help" ]

@@ -51,6 +51,7 @@ Usage: mysql_markdown [options...]
 -c      charset.  default utf8
 -o      output.   default current location
 -t      tables.   default all table and support ',' separator for filter, every item can use regexp
+-l      language. default cn,support: cn,en
 
 # 使用
 ➜ mysql_markdown -p samego -d samego
