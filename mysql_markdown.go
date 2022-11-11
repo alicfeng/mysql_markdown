@@ -21,6 +21,11 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
+const (
+	LANG_CN = "cn"
+	LANG_EN = "en"
+)
+
 /**
 Database Configuration
 */
@@ -35,6 +40,7 @@ var (
 	tables   = flag.String("t", "", "choose tables")
 	version  = flag.Bool("v", false, "show version and exit")
 	detail   = flag.Bool("V", false, "show version and exit")
+	language = flag.String("l", LANG_CN, "output language,support:cn,en")
 )
 
 /**
@@ -46,6 +52,11 @@ const (
 	// 查看数据表列信息SQL
 	SqlTableColumn = "SELECT `ORDINAL_POSITION`,`COLUMN_NAME`,`COLUMN_TYPE`,`COLUMN_KEY`,`IS_NULLABLE`,`EXTRA`,`COLUMN_COMMENT`,`COLUMN_DEFAULT` FROM `information_schema`.`columns` WHERE `table_schema`=? AND `table_name`=? ORDER BY `ORDINAL_POSITION` ASC"
 )
+
+var headers = map[string]string{
+	LANG_CN: "| 序号 | 名称 | 描述 | 类型 | 键 | 为空 | 额外 | 默认值 |",
+	LANG_EN: "| SN | Name | Description | Type | Key | Is Null | Extra | Default value |",
+}
 
 /**
 struct for table column
@@ -201,7 +212,8 @@ func init() {
 			"-P      port.     default 3306" + "\n" +
 			"-c      charset.  default utf8" + "\n" +
 			"-o      output.   default current location\n" +
-			"-t      tables.   default all table and support ',' separator for filter, every item can use regexp" +
+			"-t      tables.   default all table and support ',' separator for filter, every item can use regexp\n" +
+			"-l      language. default cn,support: cn,en" +
 			"")
 		os.Exit(0)
 	}
@@ -220,6 +232,16 @@ func init() {
 				"")
 		os.Exit(0)
 	}
+
+	if *language != "" {
+		if _, ok := headers[*language]; !ok {
+			fmt.Println("language" + *language + " is not support yet")
+			os.Exit(1)
+		}
+	} else {
+		*language = LANG_CN
+	}
+	fmt.Printf("langguage:%s", *language)
 }
 
 /**
@@ -259,6 +281,7 @@ func main() {
 	// make markdown format content
 	var tableContent = "## " + *database + " tables message\n"
 	bar := progressbar.Default(int64(len(tables)))
+	var header = headers[*language]
 
 	for index, table := range tables {
 		// make content process log
@@ -272,7 +295,7 @@ func main() {
 
 		// markdown table header
 		tableContent += "\n" +
-			"| 序号 | 名称 | 描述 | 类型 | 键 | 为空 | 额外 | 默认值 |\n" +
+			header + "\n" +
 			"| :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |\n"
 		var columnInfo, columnInfoErr = queryTableColumn(db, *database, table.Name)
 		if columnInfoErr != nil {
